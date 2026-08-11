@@ -4,7 +4,7 @@
 不需帳號、不上傳資料，紀錄只存在這台裝置。
 
 **線上瀏覽**
-- https://kids-practice.pages.dev/
+- https://kids-practice-7q9.pages.dev/
 - https://rafaelhou.github.io/kids-practice/
 
 ---
