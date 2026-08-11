@@ -1,0 +1,57 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小練習場 · 英文拼讀與認識時鐘</title>
+<meta name="description" content="給幼兒的練習遊戲：英文自然發音（對應 MCP Plaid Phonics Level A）與圓形時鐘的認讀。不需帳號，紀錄只存在本機。">
+<meta name="theme-color" content="#ff7a45">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="style.css">
+
+<header class="bar">
+  <button type="button" id="back" class="icobtn" hidden aria-label="回上一頁">←</button>
+  <h1 id="barTitle">小練習場</h1>
+  <button type="button" id="teacher" class="icobtn" aria-label="家長設定">👩‍🏫</button>
+</header>
+
+<main id="app"></main>
+
+<!-- 家長設定 -->
+<div id="panel" class="panel" hidden>
+  <div class="sheet">
+    <button type="button" id="closePanel" class="icobtn close" aria-label="關閉">✕</button>
+    <h2>家長設定</h2>
+
+    <label class="fld">
+      <span>發音</span>
+      <select id="voiceSel"></select>
+    </label>
+    <label class="fld">
+      <span>語速 <b id="rateVal">0.8</b></span>
+      <input type="range" id="rate" min="0.5" max="1.2" step="0.05" value="0.8">
+    </label>
+    <button type="button" id="testVoice" class="btn ghost">🔊 試聽 “cat”</button>
+
+    <h3>需要複習的</h3>
+    <p class="dim" id="reviewHint">還沒有紀錄。答錯的會累積在這裡。</p>
+    <div id="reviewList" class="review"></div>
+
+    <button type="button" id="clearAll" class="btn ghost danger">清除所有紀錄</button>
+
+    <div class="about">
+      <p><b>這個站在做什麼</b></p>
+      <p><b>英文拼讀</b>對應家教使用的 MCP Plaid Phonics Level A：課本 p.63 補開頭的音、p.68 找押韻、p.69 看圖選字，選項沿用課本原題。<br><b>認識時鐘</b>分三關：整點 → 半點 → 幾點幾分，紅色短針看「點」、藍色長針看「分」。</p>
+      <p>發音用瀏覽器內建的語音合成，<b>需要連網</b>。沒有聲音的話，先在上面換一個發音再試聽。</p>
+      <p>紀錄只存在這台裝置，不需要帳號、不會上傳。</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p id="counter" class="counter" hidden>本站累計瀏覽 <strong id="view-count">–</strong> 次</p>
+  <p class="small">個人整理的練習工具，非官方教材。題型參考 MCP Plaid Phonics Level A。</p>
+</footer>
+
+<script src="icons.js"></script>
+<script src="clock.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="counter.js"></script>
