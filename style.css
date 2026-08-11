@@ -257,6 +257,9 @@ main { max-width: 760px; margin: 0 auto; padding: 1rem .9rem 2.5rem; }
   padding: 1rem;
   overflow-y: auto;
 }
+/* 這行不能省：作者樣式的 display:grid 會蓋過瀏覽器預設的 [hidden]{display:none}，
+   少了它 hidden 屬性完全沒有作用，面板關不掉。 */
+.panel[hidden] { display: none; }
 .sheet {
   position: relative;
   background: var(--card); border-radius: var(--r);
