@@ -420,13 +420,24 @@
     var slots = document.getElementById('slots');
     var tiles = document.getElementById('tiles');
 
-    function draw() {
+    var undo = document.getElementById('undo');
+
+    /* justFilled：剛填進去的格子，讓它跳一下。
+       字母是從下面「移到」上面的，孩子要看得到它去了哪裡，否則只覺得字母不見了。 */
+    function draw(justFilled) {
       slots.innerHTML = q.answer.split('').map(function (_, i) {
-        return '<span class="slot">' + (placed[i] ? esc(q.tiles[placed[i] - 1]) : '') + '</span>';
+        return '<span class="slot' + (i === justFilled ? ' pop' : '') + '">' +
+               (placed[i] ? esc(q.tiles[placed[i] - 1]) : '') + '</span>';
       }).join('');
+
       [].forEach.call(tiles.children, function (b, i) {
-        b.disabled = placed.indexOf(i + 1) >= 0;
+        var used = placed.indexOf(i + 1) >= 0;
+        b.disabled = used;
+        b.hidden = used;          // 選過的就從下面拿走，剩下的自動補位
       });
+
+      undo.disabled = placed.length === 0;
+
       if (placed.length === q.answer.length) {
         var word = placed.map(function (p) { return q.tiles[p - 1]; }).join('');
         judge(q, word === q.answer, q.answer, word);
@@ -437,9 +448,9 @@
       var b = e.target.closest ? e.target.closest('[data-tile]') : null;
       if (!b || b.disabled) return;
       placed.push(+b.getAttribute('data-tile') + 1);
-      draw();
+      draw(placed.length - 1);
     };
-    document.getElementById('undo').onclick = function () { placed.pop(); draw(); };
+    undo.onclick = function () { placed.pop(); draw(); };
     draw();
   }
 
