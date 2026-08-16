@@ -380,7 +380,7 @@
         '<div class="clockstage">' + clockSVG(q.t.h, q.t.m, { minuteNumbers: mn, label: '時鐘' }) + '</div>' +
         '<div class="opts times">' + q.opts.map(function (t) {
           return '<button type="button" class="opt time-opt" data-pick="' + timeKey(t) + '">' +
-                 esc(zhTime(t.h, t.m)) + '</button>';
+                 esc(numTime(t.h, t.m)) + '</button>';
         }).join('') + '</div>';
     }
 
@@ -465,7 +465,8 @@
   }
 
   // ══════════════ 判題 ══════════════
-  /* key 用來累積統計，label 是顯示與發音用的文字。
+  /* key 用來累積統計，label 是顯示的文字。
+     時鐘題顯示阿拉伯數字、唸的是國字，所以 opts.say 可以另外指定發音文字。
      時鐘題的 key 形如 clock:3:30，跟英文單字不會撞。 */
   function judge(q, ok, key, pickedLabel, opts) {
     opts = opts || {};
@@ -486,7 +487,7 @@
         (pickedLabel && pickedLabel !== label ? '，不是 ' + esc(pickedLabel) : '') + '</span>';
     box.appendChild(msg);
 
-    (opts.zh ? sayZh : say)(label, 0.7);
+    (opts.zh ? sayZh : say)(opts.say || label, 0.7);
     setTimeout(next, ok ? 1100 : 2200);
   }
 
@@ -496,7 +497,7 @@
       var p = key.split(':'), h = +p[1], m = +p[2];
       return '<button type="button" class="chip" data-sayzh="' + esc(zhTime(h, m)) + '">' +
              '<span class="pic mini">' + clockSVG(h, m, { mini: true, label: zhTime(h, m) }) + '</span>' +
-             '<span>' + esc(zhTime(h, m)) + '</span></button>';
+             '<span>' + esc(numTime(h, m)) + '</span></button>';
     }
     return '<button type="button" class="chip" data-say="' + esc(key) + '">' +
            picHTML(key) + '<span>' + esc(key) + '</span></button>';
@@ -611,9 +612,11 @@
       if (/clock|digital/.test(q.kind)) {
         var want = timeKey(q.t);
         var picked = q.opts.filter(function (t) { return timeKey(t) === v; })[0];
+        var isDigi = q.kind === 'digital';
+        var fmt = isDigi ? digitalTime : numTime;
         judge(q, v === want, 'clock:' + q.t.h + ':' + q.t.m,
-              picked ? zhTime(picked.h, picked.m) : null,
-              { label: zhTime(q.t.h, q.t.m), zh: true });
+              picked ? fmt(picked.h, picked.m) : null,
+              { label: fmt(q.t.h, q.t.m), say: zhTime(q.t.h, q.t.m), zh: true });
         return;
       }
     }

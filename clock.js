@@ -83,6 +83,15 @@
     return zhNum(h) + '點' + zhNum(m) + '分';
   };
 
+  /* 9點 / 9點半 / 9點15分
+     選項用阿拉伯數字：孩子已經認得數字，錶面也是數字，
+     選項再寫成國字反而多一層轉換。發音仍走 zhTime。 */
+  window.numTime = function (h, m) {
+    if (m === 0) return h + '點';
+    if (m === 30) return h + '點半';
+    return h + '點' + m + '分';
+  };
+
   window.digitalTime = function (h, m) {
     return h + ':' + (m < 10 ? '0' + m : m);
   };
