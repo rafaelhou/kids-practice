@@ -22,7 +22,9 @@ window.AREAS = [
   { id: 'phonics', name: '英文拼讀', icon: '🔤',
     note: '對應家教課本 MCP Plaid Phonics Level A' },
   { id: 'clock',   name: '認識時鐘', icon: '🕐',
-    note: '紅色短針看「幾點」，藍色長針看「幾分」' }
+    note: '紅色短針看「幾點」，藍色長針看「幾分」' },
+  { id: 'board',   name: '玩遊戲', icon: '🎲',
+    note: '課本 Review 2 的蛇棋，可以兩個人輪流玩' }
 ];
 
 window.UNITS = [
@@ -145,6 +147,17 @@ window.UNITS = [
   hint: '長針指到的數字要<b>乘以 5</b>，才是分鐘。錶面外圈的藍色小字就是答案。',
   minutes: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
   minuteNumbers: true
+},
+
+/* 蛇棋。盤面與玩法都在 board.js，這裡只登記成一個單元讓它出現在首頁。 */
+{
+  id: 'snakes',
+  area: 'board', kind: 'board',
+  name: '蛇棋',
+  en: 'Snakes & Ladders',
+  icon: '🐍',
+  note: '課本 p.43',
+  hint: '轉盤轉到哪個字母，就往前走到下一個那個字母開頭的圖。'
 }
 
 ];

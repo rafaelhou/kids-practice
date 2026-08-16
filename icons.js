@@ -103,6 +103,45 @@ band:
  '<path d="M70 64c0 8 6 14 14 14s14-6 14-14z" fill="#e0a92c"/>' +
  '<rect x="72" y="42" width="5" height="10" rx="2" fill="#d99a22"/>' +
  '<rect x="81" y="42" width="5" height="10" rx="2" fill="#d99a22"/>' +
+ '</svg>',
+
+/* ── 蛇棋用（課本 Review 2，G–L）：這三個字沒有能用的 emoji ── */
+
+glue:
+ '<svg viewBox="0 0 100 100">' +
+ '<path d="M40 8h20v10H40z" fill="#8a5fc4"/>' +
+ '<path d="M44 18h12v8H44z" fill="#6b46a0"/>' +
+ '<path d="M38 26h24l6 16v40c0 5-4 8-9 8H41c-5 0-9-3-9-8V42z" fill="#f4f1e8"/>' +
+ '<path d="M38 26h24l3 8H35z" fill="#dcd6c4"/>' +
+ '<rect x="36" y="52" width="28" height="20" rx="3" fill="#f0c33c"/>' +
+ '<path d="M42 58h16M42 64h11" stroke="#a87c14" stroke-width="3" stroke-linecap="round"/>' +
+ '<ellipse cx="72" cy="88" rx="16" ry="6" fill="#cfe4f2"/>' +
+ '<ellipse cx="68" cy="86" rx="7" ry="3" fill="#eaf5fc"/>' +
+ '</svg>',
+
+igloo:
+ '<svg viewBox="0 0 100 100">' +
+ '<rect x="4" y="72" width="92" height="16" fill="#dceaf4"/>' +
+ '<path d="M12 74a38 38 0 0176 0z" fill="#f4fafd"/>' +
+ '<path d="M12 74a38 38 0 0176 0z" fill="none" stroke="#b8d2e4" stroke-width="3"/>' +
+ '<path d="M30 60h40M22 48h56M38 74V60M56 74V60M44 60V48M62 60V48" ' +
+       'stroke="#b8d2e4" stroke-width="3" stroke-linecap="round"/>' +
+ '<path d="M38 74v-14a12 12 0 0124 0v14z" fill="#cfe4f2"/>' +
+ '<path d="M38 74v-14a12 12 0 0124 0v14z" fill="none" stroke="#9dbfd6" stroke-width="3"/>' +
+ '<path d="M44 74v-9a6 6 0 0112 0v9z" fill="#5f8aa8"/>' +
+ '</svg>',
+
+jam:
+ '<svg viewBox="0 0 100 100">' +
+ '<path d="M36 12h28v8H36z" fill="#c4453a"/>' +
+ '<path d="M32 20h36v8H32z" fill="#e05a4e"/>' +
+ '<path d="M30 28h40v52c0 5-4 8-8 8H38c-4 0-8-3-8-8z" fill="#f6f2e6"/>' +
+ '<path d="M32 42h36v38c0 4-3 6-6 6H38c-3 0-6-2-6-6z" fill="#c4453a"/>' +
+ '<circle cx="42" cy="56" r="4" fill="#8f2b24"/>' +
+ '<circle cx="56" cy="66" r="4" fill="#8f2b24"/>' +
+ '<circle cx="48" cy="76" r="3" fill="#8f2b24"/>' +
+ '<rect x="36" y="46" width="28" height="14" rx="2" fill="#fff8e8"/>' +
+ '<path d="M41 52h18M41 56h12" stroke="#c98b52" stroke-width="2.5" stroke-linecap="round"/>' +
  '</svg>'
 
 };

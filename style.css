@@ -303,8 +303,96 @@ footer {
 footer p { margin: 0 0 .4rem; }
 .counter strong { color: var(--brand); }
 
+/* ══════════ 蛇棋 ══════════ */
+.bd-pick { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-bottom: 1.2rem; }
+.bd-rule {
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--r);
+  padding: .9rem 1rem;
+}
+.bd-rule h3 { margin: 0 0 .4rem; font-size: 1rem; color: var(--brand); }
+.bd-rule ol { margin: 0; padding-left: 1.3rem; font-size: .94rem; color: var(--ink2); }
+.bd-rule li { margin-bottom: .2rem; }
+
+/* 黏在頂列下面：盤面有 24 格，捲到下半部時還是要看得到「現在要找哪個字母」 */
+.bd-status {
+  position: sticky; top: 3.7rem; z-index: 20;
+  min-height: 3.2rem; display: flex; align-items: center; justify-content: center;
+  text-align: center; font-size: 1.02rem; font-weight: 700; line-height: 1.5;
+  background: var(--card); border: 2px solid var(--line); border-radius: var(--r);
+  padding: .5rem .8rem; margin-bottom: .8rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,.06);
+}
+.bd-status.good { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+.bd-status.warn { border-color: var(--brand); background: #fff1e8; color: #b8501f; }
+.bd-status.bad  { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+
+.bd-top { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: 1rem; }
+.bd-wheel-wrap { position: relative; width: 9.5rem; flex: none; }
+.bd-needle {
+  position: absolute; top: -.55rem; left: 50%; transform: translateX(-50%);
+  font-size: 1.5rem; line-height: 1; color: var(--ink); z-index: 2;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+}
+.bd-wheel { transition: transform 2s cubic-bezier(.16,.84,.28,1); }
+.bd-wheel svg { display: block; width: 100%; height: auto; }
+/* 字母跟著轉盤反向轉，時間曲線要一模一樣，字才會全程都是正的 */
+.bd-lab { transform-box: fill-box; transform-origin: center; transition: transform 2s cubic-bezier(.16,.84,.28,1); }
+
+.bd-boardwrap { margin-bottom: 1rem; }
+.bd-start, .bd-end {
+  display: flex; align-items: center; justify-content: center; gap: .4rem;
+  font-weight: 800; letter-spacing: .05em; padding: .55rem;
+  border: 3px dashed var(--line); border-radius: 14px; background: var(--card);
+}
+.bd-end { margin-bottom: .45rem; color: var(--muted); }
+.bd-end.reached { border-color: var(--ok); border-style: solid; background: var(--ok-bg); color: var(--ok); }
+.bd-start { margin-top: .45rem; color: var(--brand); }
+
+.bd-board { display: grid; gap: .55rem; padding-top: .4rem; }
+.bd-cell {
+  position: relative; display: grid; place-items: center; gap: .05rem;
+  padding: .45rem .15rem .3rem; min-height: 5.2rem;
+  background: var(--card); border: 2px solid var(--line); border-radius: 14px;
+  font: inherit; color: inherit; cursor: pointer;
+  transition: border-color .12s, transform .1s, background .12s;
+}
+.bd-cell:hover { border-color: var(--brand2); }
+.bd-n {
+  position: absolute; top: .15rem; left: .3rem;
+  font-size: .68rem; font-weight: 700; color: var(--muted);
+}
+.bd-jump {
+  position: absolute; top: -.5rem; right: -.35rem; font-size: 1rem; line-height: 1;
+  width: 1.6rem; height: 1.6rem; display: grid; place-items: center;
+  border-radius: 50%; background: var(--card); border: 2px solid var(--line);
+}
+.bd-jump.up   { border-color: var(--ok); }
+.bd-jump.down { border-color: var(--bad); }
+.bd-cell .pic.emoji { font-size: 1.9rem; line-height: 1.1; }
+.bd-cell .pic.svg svg { width: 2rem; height: 2rem; display: block; }
+.bd-w {
+  font-family: ui-monospace, "Courier New", monospace;
+  font-size: .76rem; font-weight: 800; letter-spacing: .02em; color: var(--ink2);
+}
+.bd-toks { display: flex; gap: .1rem; min-height: 1.1rem; font-size: .9rem; line-height: 1; }
+.bd-tok { animation: tokdrop .3s ease-out; }
+@keyframes tokdrop { from { transform: translateY(-8px) scale(.5); opacity: 0; } }
+
+.bd-cell.hintme { border-color: var(--brand); background: #fff1e8; animation: hintpulse 1s ease-in-out infinite; }
+@keyframes hintpulse { 50% { transform: scale(1.06); } }
+.bd-cell.shake { animation: bdshake .35s; border-color: var(--bad); }
+@keyframes bdshake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.bd-cell.poke { border-color: var(--brand2); transform: scale(1.06); }
+
 /* ── 小螢幕 ── */
 @media (max-width: 420px) {
+  .bd-cell { min-height: 4.6rem; }
+  .bd-cell .pic.emoji { font-size: 1.6rem; }
+  .bd-cell .pic.svg svg { width: 1.7rem; height: 1.7rem; }
+  .bd-w { font-size: .68rem; }
+  .bd-top { gap: .7rem; }
+  .bd-wheel-wrap { width: 7.5rem; }
+  .bd-pick { grid-template-columns: 1fr; }
   .opts.words { grid-template-columns: repeat(2, 1fr); }
   .stage .pic.emoji { font-size: 4rem; }
   .stage .pic.svg svg { width: 4.4rem; height: 4.4rem; }

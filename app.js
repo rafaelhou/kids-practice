@@ -166,7 +166,7 @@
     back.hidden = true;
     barTitle.textContent = '小練習場';
     app.innerHTML =
-      '<p class="lead">選一個單元開始。<span class="dim">每一關 10 題，答錯的會記下來給爸媽看。</span></p>' +
+      '<p class="lead">選一個單元開始。<span class="dim">練習每一關 10 題，答錯的會記下來給爸媽看；蛇棋沒有題數，走到終點為止。</span></p>' +
       window.AREAS.map(function (a) {
         var us = UNITS.filter(function (u) { return u.area === a.id; });
         if (!us.length) return '';
@@ -174,8 +174,8 @@
                  '<h2><span>' + a.icon + '</span>' + esc(a.name) + '</h2>' +
                  '<p class="anote">' + esc(a.note) + '</p>' +
                  '<div class="grid">' + us.map(function (u) {
-                   var sub = u.kind === 'clock' ? u.en : u.en;
-                   var cnt = u.kind === 'clock' ? u.note : u.words.length + ' 個字';
+                   var sub = u.en;
+                   var cnt = u.words ? u.words.length + ' 個字' : u.note;
                    return '<button type="button" class="tile" data-unit="' + u.id + '">' +
                             '<span class="tico">' + u.icon + '</span>' +
                             '<span class="tname">' + esc(u.name) + '</span>' +
@@ -227,6 +227,16 @@
                '</button>';
       }).join('') +
       '</div>' + tail;
+  }
+
+  // ══════════════ 畫面：蛇棋 ══════════════
+  function screenBoard(u) {
+    state.unit = u; state.game = null;
+    back.hidden = false;
+    barTitle.textContent = u.icon + ' ' + u.name;
+    run = null;
+    app.innerHTML = '';
+    window.BOARD.mount(app, { esc: esc, say: say, voiceWarnHTML: voiceWarnHTML });
   }
 
   // ══════════════ 出題 ══════════════
@@ -568,7 +578,9 @@
     var unitBtn = t.closest('[data-unit]');
     if (unitBtn) {
       var u = UNITS.filter(function (x) { return x.id === unitBtn.getAttribute('data-unit'); })[0];
-      if (u) screenGames(u);
+      if (!u) return;
+      // 蛇棋沒有「選遊戲」這一層，點下去就直接開盤
+      if (u.kind === 'board') screenBoard(u); else screenGames(u);
       return;
     }
 
