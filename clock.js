@@ -83,6 +83,14 @@
     return zhNum(h) + '點' + zhNum(m) + '分';
   };
 
+  /* 8 點 / 8 點 30 分 —— 螢幕上顯示用。
+     他認得阿拉伯數字，但「八」「九」這種中文數字還在學，
+     選項寫中文數字等於在考兩件事：先讀懂國字，才輪到看時鐘。
+     所以顯示一律用數字，唸出來還是用 zhTime 的自然講法。 */
+  window.numTime = function (h, m) {
+    return m === 0 ? h + ' 點' : h + ' 點 ' + m + ' 分';
+  };
+
   window.digitalTime = function (h, m) {
     return h + ':' + (m < 10 ? '0' + m : m);
   };

@@ -163,6 +163,7 @@
 
   function screenUnits() {
     state.unit = null; state.game = null;
+    run = null;                     // 作廢還沒觸發的換題計時器
     back.hidden = true;
     barTitle.textContent = '小練習場';
     app.innerHTML =
@@ -190,6 +191,7 @@
   // ══════════════ 畫面：選遊戲 ══════════════
   function screenGames(u) {
     state.unit = u; state.game = null;
+    run = null;
     back.hidden = false;
     barTitle.textContent = u.icon + ' ' + u.name;
     var avail = GAMES.filter(function (g) { return g.has(u); });
@@ -379,8 +381,9 @@
         '<p class="ask">現在幾點？</p>' +
         '<div class="clockstage">' + clockSVG(q.t.h, q.t.m, { minuteNumbers: mn, label: '時鐘' }) + '</div>' +
         '<div class="opts times">' + q.opts.map(function (t) {
-          return '<button type="button" class="opt time-opt" data-pick="' + timeKey(t) + '">' +
-                 esc(zhTime(t.h, t.m)) + '</button>';
+          return '<button type="button" class="opt time-opt" data-pick="' + timeKey(t) + '" ' +
+                 'aria-label="' + esc(zhTime(t.h, t.m)) + '">' +
+                 esc(numTime(t.h, t.m)) + '</button>';
         }).join('') + '</div>';
     }
 
@@ -396,7 +399,8 @@
 
     if (q.kind === 'findclock') {
       body =
-        '<p class="ask">哪一個是 <b class="tgt">' + esc(zhTime(q.t.h, q.t.m)) + '</b>？</p>' +
+        '<p class="ask">哪一個是 <b class="tgt" aria-label="' + esc(zhTime(q.t.h, q.t.m)) + '">' +
+        esc(numTime(q.t.h, q.t.m)) + '</b>？</p>' +
         '<button type="button" class="speaker small mid" id="replay">🔊</button>' +
         '<div class="opts clocks">' + q.opts.map(function (t) {
           return '<button type="button" class="opt clock-opt" data-pick="' + timeKey(t) + '">' +
@@ -465,11 +469,13 @@
   }
 
   // ══════════════ 判題 ══════════════
-  /* key 用來累積統計，label 是顯示與發音用的文字。
+  /* key 用來累積統計，label 是畫面上顯示的文字，speak 是唸出來的。
+     時鐘題兩者不同：畫面寫「8 點 30 分」，嘴巴要唸「八點半」。
      時鐘題的 key 形如 clock:3:30，跟英文單字不會撞。 */
   function judge(q, ok, key, pickedLabel, opts) {
     opts = opts || {};
     var label = opts.label || key;
+    var speak = opts.speak || label;
 
     mark(key, ok);
     if (ok) run.right++; else if (run.missed.indexOf(key) < 0) run.missed.push(key);
@@ -486,8 +492,11 @@
         (pickedLabel && pickedLabel !== label ? '，不是 ' + esc(pickedLabel) : '') + '</span>';
     box.appendChild(msg);
 
-    (opts.zh ? sayZh : say)(label, 0.7);
-    setTimeout(next, ok ? 1100 : 2200);
+    (opts.zh ? sayZh : say)(speak, 0.7);
+    /* 這個計時器要認得自己屬於哪一輪：孩子答完馬上按返回是很常見的動作，
+       兩秒後這個 next() 才觸發，會把已經離開的題目重新畫回首頁上面。 */
+    var myRun = run;
+    setTimeout(function () { if (run === myRun) next(); }, ok ? 1100 : 2200);
   }
 
   /* 統計清單裡的一顆藥丸：英文字顯示圖，時鐘顯示小錶面 */
@@ -496,7 +505,7 @@
       var p = key.split(':'), h = +p[1], m = +p[2];
       return '<button type="button" class="chip" data-sayzh="' + esc(zhTime(h, m)) + '">' +
              '<span class="pic mini">' + clockSVG(h, m, { mini: true, label: zhTime(h, m) }) + '</span>' +
-             '<span>' + esc(zhTime(h, m)) + '</span></button>';
+             '<span>' + esc(numTime(h, m)) + '</span></button>';
     }
     return '<button type="button" class="chip" data-say="' + esc(key) + '">' +
            picHTML(key) + '<span>' + esc(key) + '</span></button>';
@@ -612,8 +621,9 @@
         var want = timeKey(q.t);
         var picked = q.opts.filter(function (t) { return timeKey(t) === v; })[0];
         judge(q, v === want, 'clock:' + q.t.h + ':' + q.t.m,
-              picked ? zhTime(picked.h, picked.m) : null,
-              { label: zhTime(q.t.h, q.t.m), zh: true });
+              picked ? (q.kind === 'digital' ? digitalTime(picked.h, picked.m) : numTime(picked.h, picked.m)) : null,
+              { label: q.kind === 'digital' ? digitalTime(q.t.h, q.t.m) : numTime(q.t.h, q.t.m),
+                speak: zhTime(q.t.h, q.t.m), zh: true });
         return;
       }
     }
