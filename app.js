@@ -383,7 +383,7 @@
         '<div class="opts times">' + q.opts.map(function (t) {
           return '<button type="button" class="opt time-opt" data-pick="' + timeKey(t) + '" ' +
                  'aria-label="' + esc(zhTime(t.h, t.m)) + '">' +
-                 esc(numTime(t.h, t.m)) + '</button>';
+                 esc(digitalTime(t.h, t.m)) + '</button>';
         }).join('') + '</div>';
     }
 
@@ -400,7 +400,7 @@
     if (q.kind === 'findclock') {
       body =
         '<p class="ask">哪一個是 <b class="tgt" aria-label="' + esc(zhTime(q.t.h, q.t.m)) + '">' +
-        esc(numTime(q.t.h, q.t.m)) + '</b>？</p>' +
+        esc(digitalTime(q.t.h, q.t.m)) + '</b>？</p>' +
         '<button type="button" class="speaker small mid" id="replay">🔊</button>' +
         '<div class="opts clocks">' + q.opts.map(function (t) {
           return '<button type="button" class="opt clock-opt" data-pick="' + timeKey(t) + '">' +
@@ -505,7 +505,7 @@
       var p = key.split(':'), h = +p[1], m = +p[2];
       return '<button type="button" class="chip" data-sayzh="' + esc(zhTime(h, m)) + '">' +
              '<span class="pic mini">' + clockSVG(h, m, { mini: true, label: zhTime(h, m) }) + '</span>' +
-             '<span>' + esc(numTime(h, m)) + '</span></button>';
+             '<span>' + esc(digitalTime(h, m)) + '</span></button>';
     }
     return '<button type="button" class="chip" data-say="' + esc(key) + '">' +
            picHTML(key) + '<span>' + esc(key) + '</span></button>';
@@ -621,8 +621,8 @@
         var want = timeKey(q.t);
         var picked = q.opts.filter(function (t) { return timeKey(t) === v; })[0];
         judge(q, v === want, 'clock:' + q.t.h + ':' + q.t.m,
-              picked ? (q.kind === 'digital' ? digitalTime(picked.h, picked.m) : numTime(picked.h, picked.m)) : null,
-              { label: q.kind === 'digital' ? digitalTime(q.t.h, q.t.m) : numTime(q.t.h, q.t.m),
+              picked ? digitalTime(picked.h, picked.m) : null,
+              { label: digitalTime(q.t.h, q.t.m),
                 speak: zhTime(q.t.h, q.t.m), zh: true });
         return;
       }
