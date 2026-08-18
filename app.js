@@ -118,9 +118,9 @@
     // 認識時鐘
     { id: 'readclock', name: '現在幾點？', icon: '⏰', desc: '看時鐘，選出正確的時間',
       has: function (u) { return u.kind === 'clock'; } },
-    { id: 'findclock', name: '哪一個時鐘？', icon: '🔍', desc: '聽時間，找出對的時鐘',
+    { id: 'digital',   name: '配數字鐘', icon: '🔢', desc: '看電子鐘的數字，找出對的時鐘',
       has: function (u) { return u.kind === 'clock'; } },
-    { id: 'digital',   name: '配數字鐘', icon: '🔢', desc: '圓形時鐘配電子鐘',
+    { id: 'findclock', name: '哪一個時鐘？', icon: '🔍', desc: '聽時間，找出對的時鐘',
       has: function (u) { return u.kind === 'clock'; } }
   ];
 
@@ -387,13 +387,16 @@
         }).join('') + '</div>';
     }
 
+    /* 這關和「現在幾點？」是反方向：那邊是錶→數字，這邊是數字→錶。
+       時間改成 8:00 之後，如果這關還是「看錶選數字」，兩關會出一模一樣的題目。 */
     if (q.kind === 'digital') {
       body =
-        '<p class="ask">這個時間，電子鐘會顯示幾號？</p>' +
-        '<div class="clockstage">' + clockSVG(q.t.h, q.t.m, { minuteNumbers: mn, label: '時鐘' }) + '</div>' +
-        '<div class="opts times">' + q.opts.map(function (t) {
-          return '<button type="button" class="opt digi-opt" data-pick="' + timeKey(t) + '">' +
-                 esc(digitalTime(t.h, t.m)) + '</button>';
+        '<p class="ask">電子鐘顯示這個時間，是哪一個時鐘？</p>' +
+        '<div class="digistage"><span class="digi" aria-label="' + esc(zhTime(q.t.h, q.t.m)) + '">' +
+        esc(digitalTime(q.t.h, q.t.m)) + '</span></div>' +
+        '<div class="opts clocks">' + q.opts.map(function (t) {
+          return '<button type="button" class="opt clock-opt" data-pick="' + timeKey(t) + '">' +
+                 clockSVG(t.h, t.m, { minuteNumbers: mn, label: '時鐘' }) + '</button>';
         }).join('') + '</div>';
     }
 
